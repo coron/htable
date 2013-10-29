@@ -17,3 +17,10 @@ What is implemented
 * AES with the new anti-DPA countermeasure based on table recomputation.
 * DES with the new anti-DPA countermeasure based on table recomputation.
 
+Note
+----
+
+We do not claim that in practice the implementation would be secure against a t-th order attack. Namely the implementation is only provided for illustrative purpose, and timing comparisons. 
+
+Obtaining a secure implementation would require to carefully examine the assembly code. In particular one should make sure that no two shares of the same variable are stored in the same register.
+
