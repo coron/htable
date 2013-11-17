@@ -270,7 +270,7 @@ void aes(byte in[16],byte out[16],byte w[176])
     out[i]=state[i];
 }
 
-int run_aes(byte in[16],byte out[16],byte key[16],int nt)
+double run_aes(byte in[16],byte out[16],byte key[16],int nt)
 {
   int i;
   byte w[176];
@@ -283,5 +283,5 @@ int run_aes(byte in[16],byte out[16],byte key[16],int nt)
     aes(in,out,w);
   end=clock();
 
- return (int) (end-start);
+ return (double) (end-start);
 }

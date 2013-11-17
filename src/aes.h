@@ -19,7 +19,7 @@ void shiftrows(byte state[16]);
 void addroundkey(byte *state,byte *w,int round);
 
 void aes(byte in[16],byte out[16],byte key[16]);
-int run_aes(byte in[16],byte out[16],byte key[16],int nt);
+double run_aes(byte in[16],byte out[16],byte key[16],int nt);
 
 void testaes();
 

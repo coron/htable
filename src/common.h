@@ -3,8 +3,8 @@
 
 typedef unsigned char byte;
 
-void report_time(int dt,int nt,int base);
+void report_time(double dt,int nt,double base);
 void check_ciphertext(byte *out,byte *outex,int nbyte);
-int runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,byte *outex,int nbyte,int nt,int base);
+double runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,byte *outex,int nbyte,int nt,double base);
 
 #endif

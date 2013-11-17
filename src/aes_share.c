@@ -99,7 +99,7 @@ void aes_share_subkeys(byte in[16],byte out[16],byte *wshare[176],int n,void (*s
   }
 }
 
-int run_aes_share(byte in[16],byte out[16],byte key[16],int n,void (*subbyte_share_call)(byte *,int),int nt)
+double run_aes_share(byte in[16],byte out[16],byte key[16],int n,void (*subbyte_share_call)(byte *,int),int nt)
 {
   int i;
   byte w[176];
@@ -123,7 +123,7 @@ int run_aes_share(byte in[16],byte out[16],byte key[16],int n,void (*subbyte_sha
   for(i=0;i<176;i++)
     free(wshare[i]);
 
-  return (int) (end-start);
+  return (double) (end-start);
 }
   
 
