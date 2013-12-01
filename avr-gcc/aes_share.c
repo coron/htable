@@ -1,7 +1,7 @@
 #include "aes_share.h"
 
 #include <stdlib.h>
-#include <time.h>
+//#include <time.h>
 
 void shiftrows_share(byte *stateshare[16],int n)
 {
@@ -101,11 +101,12 @@ void aes_share_subkeys(byte in[16],byte out[16],byte *wshare[176],int n,void (*s
 
 double run_aes_share(byte in[16],byte out[16],byte key[16],int n,void (*subbyte_share_call)(byte *,int),int nt)
 {
+  printf("begin run_aes_share\n");
   int i;
   byte w[176];
   byte *wshare[176];
-  clock_t start,end;
-
+  //clock_t start,end;
+  printf("before keyexpansion in run_aes_share\n");
   keyexpansion(key,w);
 
   for(i=0;i<176;i++)
@@ -115,15 +116,15 @@ double run_aes_share(byte in[16],byte out[16],byte key[16],int n,void (*subbyte_
     refresh(wshare[i],n);
   }
  
-  start=clock();
+  //start=clock();
   for(i=0;i<nt;i++)
     aes_share_subkeys(in,out,wshare,n,subbyte_share_call);
-  end=clock();
+  //end=clock();
 
   for(i=0;i<176;i++)
     free(wshare[i]);
 
-  return (double) (end-start);
+  return 1;//(double) (end-start);
 }
   
 

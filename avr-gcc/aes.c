@@ -1,7 +1,7 @@
 #include "aes.h"
 
 #include <stdio.h>
-#include <time.h>
+//#include <time.h>
 
 byte sbox[256]={
 0x63,0x7c,0x77,0x7b,0xf2,0x6b,0x6f,0xc5,
@@ -274,14 +274,14 @@ double run_aes(byte in[16],byte out[16],byte key[16],int nt)
 {
   int i;
   byte w[176];
-  clock_t start,end;
+  //clock_t start,end;
 
   keyexpansion(key,w);
   
-  start=clock();
+  //start=clock();
   for(i=0;i<nt;i++)
     aes(in,out,w);
-  end=clock();
+  //end=clock();
 
- return (double) (end-start);
+ return 1;//(double) (end-start);
 }

@@ -1,7 +1,7 @@
-#include <stdio.h>
 #include <stdlib.h>
-#include <time.h>
+//#include <time.h>
 #include <string.h>
+
 
 #include "aes.h"
 #include "aes_rp.h"
@@ -9,6 +9,8 @@
 #include "aes_share.h"
 #include "aes_htable.h"
 #include "common.h"
+
+
 
 void printMes(char *s,byte *m)
 {
@@ -20,6 +22,12 @@ void printMes(char *s,byte *m)
 
 int main()
 {
+  //sets up stdout for debug
+  stdout = &my_stdout;
+  stderr = &my_stdout;
+  
+  //printf("Hey man\n");
+
   int n;
   int nt=100;
   int i;
@@ -39,7 +47,7 @@ int main()
   for(i=0;i<16;i++) in[i]=inex[i];
 
   double dt,base;
-
+/*
   printf("Without countermeasure, plain: ");
   dt=run_aes(in,out,key,nt);
   base=dt;
@@ -48,20 +56,23 @@ int main()
 
   printf("Without countermeasure, RP: ");
   runalgo(&aes_rp,in,out,key,outex,16,nt,base);
-
+*/
   for(n=3;n<=9;n+=2)
   {
     printf("n=%d\n",n);
+    
     printf("  With RP countermeasure: ");
     dt=run_aes_share(in,out,key,n,&subbyte_rp_share,nt);
     report_time(dt,nt,base);
     check_ciphertext(out,outex,16);
-
+/*
     printf("  With randomized table : ");
     dt=run_aes_share(in,out,key,n,&subbyte_htable_word,nt);
     report_time(dt,nt,base);
     check_ciphertext(out,outex,16);
+*/
   }
+  
 }
 
 

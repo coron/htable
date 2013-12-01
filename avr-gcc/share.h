@@ -3,7 +3,7 @@
 
 #include "common.h"
 
-unsigned long xorshf96(void);
+uint32_t xorshf96(void);
 
 void refresh(byte a[],int n);
 void share(byte x,byte a[],int n);

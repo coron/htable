@@ -1,9 +1,9 @@
 #include "share.h"
 
-static unsigned long x=123456789, y=362436069, z=521288629;
+static uint32_t x=123456789, y=362436069, z=521288629;
 
-unsigned long xorshf96(void) {   
-  unsigned long t;
+uint32_t xorshf96(void) {   
+  uint32_t t;
   x ^= x << 16;
   x ^= x >> 5;
   x ^= x << 1;
