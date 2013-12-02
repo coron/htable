@@ -1,9 +1,13 @@
 #include "aes.h"
 
+#include <avr/pgmspace.h>
+#include <stdint.h>
+
 #include <stdio.h>
 //#include <time.h>
 
-byte sbox[256]={
+
+const byte sbox[256] PROGMEM={
 0x63,0x7c,0x77,0x7b,0xf2,0x6b,0x6f,0xc5,
 0x30,0x01,0x67,0x2b,0xfe,0xd7,0xab,0x76,
 0xca,0x82,0xc9,0x7d,0xfa,0x59,0x47,0xf0,
@@ -50,7 +54,7 @@ byte multx(byte x)
 // slow multiplication in GF(2^8)
 byte mult(byte x,byte y)
 {
-  int i;
+  uint8_t i;
   byte z=0;
   byte a=128;
   for(i=7;i>=0;i--)
@@ -65,7 +69,7 @@ byte mult(byte x,byte y)
 // slow inverse
 byte inverse(byte x)
 {
-  int i;
+  uint8_t i;
   byte y=0;
   if(x==0) return 0;
   for(i=0;i<255;i++)
@@ -75,7 +79,7 @@ byte inverse(byte x)
   }
 }
 
-byte bit(byte x,int i)
+byte bit(byte x,uint8_t i)
 {
   return (x >> i) & 1;
 }
@@ -84,7 +88,7 @@ byte bit(byte x,int i)
 byte affine(byte x)
 {
   byte y=0;
-  int i;
+  uint8_t i;
   byte z;
   for(i=7;i>=0;i--)
   {
@@ -98,7 +102,7 @@ byte affine(byte x)
 // Generation of the AES Sbox
 void gensbox()
 {
-  int i;
+  uint8_t i;
   byte x=0;
   printf("byte sbox[256]={");
   for(i=0;i<256;i++)
@@ -113,31 +117,33 @@ void gensbox()
 
 byte subbyte(byte x)
 {
-  return sbox[x];
+  return pgm_read_byte(&(sbox[x]));
+  //return sbox[x];
 }
 
 // slow invsubbyte
 byte invsubbyte(byte x)
 {
-  int i;
+  uint8_t i;
   byte y=0;
   for(i=0;i<256;i++)
   {
-    if(sbox[y]==x) return y;
+    //if(sbox[y])==x) return y;
+    if(pgm_read_byte(&(sbox[y]))==x) return y;
     y++;
   }
 }
 
 void invsubbytestate(byte state[16])
 {
-  int i;
+  uint8_t i;
   for(i=0;i<16;i++) state[i]=invsubbyte(state[i]);
 }
 
 void printstate(byte state[16])
 {
-  int i;
-  int j;
+  uint8_t i;
+  uint8_t j;
   for(i=0;i<4;i++)
   {
     for(j=0;j<4;j++)
@@ -147,9 +153,9 @@ void printstate(byte state[16])
   printf("\n");
 }
 
-void addroundkey(byte *state,byte *w,int round)
+void addroundkey(byte *state,byte *w,uint8_t round)
 {
-  int i;
+  uint8_t i;
   for(i=0;i<16;i++)
     state[i]^=w[16*round+i];
 }
@@ -182,7 +188,7 @@ void shiftrows(byte state[16])
 void mixcolumns(byte *state)
 {
   byte ns[16];
-  int i,j;
+  uint8_t i,j;
   for(j=0;j<4;j++)
   {
     ns[j*4]=multx(state[j*4]) ^ multx(state[j*4+1]) ^ state[j*4+1] ^ state[j*4+2] ^ state[j*4+3];
@@ -197,7 +203,7 @@ void mixcolumns(byte *state)
 
 void setrcon(byte rcon[10])
 {
-  int i;
+  uint8_t i;
   byte x=1;
 
   for(i=0;i<10;i++)
@@ -209,7 +215,7 @@ void setrcon(byte rcon[10])
 
 void keyexpansion(byte *key,byte *w)
 {
-  int i,j;
+  uint8_t i,j;
   byte temp[4];
   
   byte rcon[10];
@@ -238,15 +244,15 @@ void keyexpansion(byte *key,byte *w)
 
 void subbytestate(byte *state)
 {
-  int i;
+  uint8_t i;
   for(i=0;i<16;i++) 
     state[i]=subbyte(state[i]);
 }
 
 void aes(byte in[16],byte out[16],byte w[176])
 {
-  int i,j;
-  int round=0;
+  uint8_t i,j;
+  uint8_t round=0;
   byte state[16];
 
   for(i=0;i<16;i++)
@@ -270,9 +276,9 @@ void aes(byte in[16],byte out[16],byte w[176])
     out[i]=state[i];
 }
 
-double run_aes(byte in[16],byte out[16],byte key[16],int nt)
+double run_aes(byte in[16],byte out[16],byte key[16],uint8_t nt)
 {
-  int i;
+  uint8_t i;
   byte w[176];
   //clock_t start,end;
 

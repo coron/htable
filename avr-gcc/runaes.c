@@ -4,10 +4,10 @@
 
 
 #include "aes.h"
-#include "aes_rp.h"
-#include "share.h"
-#include "aes_share.h"
-#include "aes_htable.h"
+//#include "aes_rp.h"
+//#include "share.h"
+//#include "aes_share.h"
+//#include "aes_htable.h"
 #include "common.h"
 
 
@@ -47,16 +47,16 @@ int main()
   for(i=0;i<16;i++) in[i]=inex[i];
 
   double dt,base;
-/*
+
   printf("Without countermeasure, plain: ");
   dt=run_aes(in,out,key,nt);
   base=dt;
   check_ciphertext(out,outex,16);
   report_time(dt,nt,base);
 
-  printf("Without countermeasure, RP: ");
-  runalgo(&aes_rp,in,out,key,outex,16,nt,base);
-*/
+//  printf("Without countermeasure, RP: ");
+//  runalgo(&aes_rp,in,out,key,outex,16,nt,base);
+/*
   for(n=3;n<=9;n+=2)
   {
     printf("n=%d\n",n);
@@ -65,14 +65,14 @@ int main()
     dt=run_aes_share(in,out,key,n,&subbyte_rp_share,nt);
     report_time(dt,nt,base);
     check_ciphertext(out,outex,16);
-/*
+
     printf("  With randomized table : ");
     dt=run_aes_share(in,out,key,n,&subbyte_htable_word,nt);
     report_time(dt,nt,base);
     check_ciphertext(out,outex,16);
-*/
+
   }
-  
+*/
 }
 
 
