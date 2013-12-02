@@ -1,11 +1,14 @@
 #include "aes_rp.h"
 #include "aes.h"
 
+#include <avr/pgmspace.h>
+#include <stdint.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-byte sq[256]={
+const byte sq[256] PROGMEM={
 0x00,0x01,0x04,0x05,0x10,0x11,0x14,0x15,
 0x40,0x41,0x44,0x45,0x50,0x51,0x54,0x55,
 0x1b,0x1a,0x1f,0x1e,0x0b,0x0a,0x0f,0x0e,
@@ -39,7 +42,7 @@ byte sq[256]={
 0x46,0x47,0x42,0x43,0x56,0x57,0x52,0x53,
 0x06,0x07,0x02,0x03,0x16,0x17,0x12,0x13};
 
-byte taffine[256]={
+const byte taffine[256] PROGMEM={
 0x63,0x7c,0x5d,0x42,0x1f,0x00,0x21,0x3e,
 0x9b,0x84,0xa5,0xba,0xe7,0xf8,0xd9,0xc6,
 0x92,0x8d,0xac,0xb3,0xee,0xf1,0xd0,0xcf,
@@ -73,7 +76,7 @@ byte taffine[256]={
 0x39,0x26,0x07,0x18,0x45,0x5a,0x7b,0x64,
 0xc1,0xde,0xff,0xe0,0xbd,0xa2,0x83,0x9c};
 
-byte tsmult[1024]={
+const byte tsmult[1024] PROGMEM={
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x00,0x00,0x00,0x00,0x00,0x00,0x00,
 0x00,0x01,0x02,0x03,0x04,0x05,0x06,0x07,
@@ -221,7 +224,8 @@ void gensquare()
 byte square(byte x)
 {
   //return mult(x,x);
-  return sq[x];
+  return pgm_read_byte(&(sq[x]));
+  //return sq[x];
 }
 
 void gentaffine()
@@ -262,10 +266,14 @@ void gensmall_multtable()
 // Computes z=x*y in GF(2^8) using four 8-bit tables 
 byte multtable(byte x,byte y)
 {
-  return tsmult[0   | ((x & 15) << 4) | (y & 15)] ^
-         tsmult[512 | (x & 240) | (y & 15)] ^
-         tsmult[256 | ((x & 15) << 4) | (y >> 4)] ^
-         tsmult[768 | (x & 240) | (y >> 4)];
+  //return tsmult[0   | ((x & 15) << 4) | (y & 15)] ^
+  //       tsmult[512 | (x & 240) | (y & 15)] ^
+  //       tsmult[256 | ((x & 15) << 4) | (y >> 4)] ^
+  //       tsmult[768 | (x & 240) | (y >> 4)];
+  return pgm_read_byte(&(tsmult[0   | ((x & 15) << 4) | (y & 15)])) ^
+         pgm_read_byte(&(tsmult[512 | (x & 240) | (y & 15)])) ^
+         pgm_read_byte(&(tsmult[256 | ((x & 15) << 4) | (y >> 4)])) ^
+         pgm_read_byte(&(tsmult[768 | (x & 240) | (y >> 4)]));
 }
 
 // AES Sbox computation without masking
@@ -279,7 +287,8 @@ byte subbyte_rp(byte x)
   byte u15=multtable(u14,x);
   byte u240=square(square(square(square(u15))));
   byte u254=multtable(u240,u14);
-  return taffine[u254];
+  return pgm_read_byte(&(taffine[u254]));
+  //return taffine[u254];
 }
 
 void square_share(byte *a,int n)
@@ -335,7 +344,7 @@ void subbyte_rp_share(byte *a,int n)
   multshare(y,z,a,n);    // a=x^254
 
   for(i=0;i<n;i++)
-    a[i]=taffine[a[i]];
+    a[i]=pgm_read_byte(&(taffine[a[i]]));
   if((n%2)==0)
     a[0]^=99;
 }

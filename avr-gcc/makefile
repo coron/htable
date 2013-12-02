@@ -15,7 +15,7 @@ runaes.elf : $(AESOBJ)
 #        avr-gcc -g -mmcu=$(mcu) -Os -o runaes_normal.out $(AESOBJ_norm)
 
 %.o: %.c 
-	avr-gcc -g -mmcu=$(mcu) -Os -o $@ -c $<
+	avr-gcc -g -mmcu=$(mcu) -O3 -o $@ -c $<
 
 clean:
 	rm -f *.o *.elf

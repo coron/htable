@@ -4,7 +4,7 @@
 
 
 #include "aes.h"
-//#include "aes_rp.h"
+#include "aes_rp.h"
 //#include "share.h"
 //#include "aes_share.h"
 //#include "aes_htable.h"
@@ -26,8 +26,6 @@ int main()
   stdout = &my_stdout;
   stderr = &my_stdout;
   
-  //printf("Hey man\n");
-
   int n;
   int nt=100;
   int i;
@@ -54,8 +52,8 @@ int main()
   check_ciphertext(out,outex,16);
   report_time(dt,nt,base);
 
-//  printf("Without countermeasure, RP: ");
-//  runalgo(&aes_rp,in,out,key,outex,16,nt,base);
+  printf("Without countermeasure, RP: ");
+  runalgo(&aes_rp,in,out,key,outex,16,nt,base);
 /*
   for(n=3;n<=9;n+=2)
   {
