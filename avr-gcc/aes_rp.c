@@ -208,7 +208,7 @@ const byte tsmult[1024] PROGMEM={
 
 void gensquare()
 {
-  int i;
+  uint8_t i;
   byte x=0;
   printf("byte sq[256]={");
   for(i=0;i<256;i++)
@@ -230,7 +230,7 @@ byte square(byte x)
 
 void gentaffine()
 {
-  int i;
+  uint8_t i;
   byte x=0;
   printf("byte taffine[256]={");
   for(i=0;i<256;i++)
@@ -245,7 +245,7 @@ void gentaffine()
 
 void gensmall_multtable()
 {
-  int i,j;
+  uint8_t i,j;
   byte x,y;
   byte t[1024];
   for(i=0;i<2;i++)
@@ -291,17 +291,17 @@ byte subbyte_rp(byte x)
   //return taffine[u254];
 }
 
-void square_share(byte *a,int n)
+void square_share(byte *a,uint8_t n)
 {
-  int i;
+  uint8_t i;
   for(i=0;i<n;i++)
     a[i]=square(a[i]);
 }
 
 // The shared multiplication SecMult of Rivain-Prouff
-void multshare(byte *a,byte *b,byte *c,int n)
+void multshare(byte *a,byte *b,byte *c,uint8_t n)
 {
-  int i,j;
+  uint8_t i,j;
   for(i=0;i<n;i++)
     c[i]=multtable(a[i],b[i]);
 
@@ -317,9 +317,9 @@ void multshare(byte *a,byte *b,byte *c,int n)
   }
 }
 
-void subbyte_rp_share(byte *a,int n)
+void subbyte_rp_share(byte *a,uint8_t n)
 {
-  int i;
+  uint8_t i;
   byte z[n];
   memcpy(z,a,n);
   square_share(z,n);    // z=x^2
@@ -351,15 +351,15 @@ void subbyte_rp_share(byte *a,int n)
 
 void subbytestate_rp(byte *state)
 {
-  int i;
+  uint8_t i;
   for(i=0;i<16;i++) state[i]=subbyte_rp(state[i]);
 }
 
 
 void aes_rp(byte in[16],byte out[16],byte key[16])
 {
-  int i,j;
-  int round=0;
+  uint8_t i,j;
+  uint8_t round=0;
   byte state[16];
   byte w[176];
 
