@@ -5,9 +5,9 @@
 
 uint32_t xorshf96(void);
 
-void refresh(byte a[],int n);
-void share(byte x,byte a[],int n);
-byte xorop(byte a[],int n);
-byte decode(byte a[],int n);
+void refresh(byte a[],uint8_t n);
+void share(byte x,byte a[],uint8_t n);
+byte xorop(byte a[],uint8_t n);
+byte decode(byte a[],uint8_t n);
 
 #endif

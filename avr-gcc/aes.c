@@ -220,7 +220,7 @@ void keyexpansion(byte *key,byte *w)
   
   byte rcon[10];
   setrcon(rcon);
- 
+
   for(i=0;i<16;i++)
     w[i]=key[i];
 

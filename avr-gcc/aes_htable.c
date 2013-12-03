@@ -1,5 +1,8 @@
 #include "aes_htable.h"
 
+#include <avr/pgmspace.h>
+#include <stdint.h>
+
 #include <string.h>
 
 #define K 256
@@ -14,7 +17,8 @@ void subbyte_htable(byte *a,int n)
   int i,j,k;
  
   for(k=0;k<K;k++)
-    share(sbox[k],T[k],n);
+    share(pgm_read_byte(&(sbox[k])),T[k],n);
+    //share(sbox[k],T[k],n);
 
   for(i=0;i<(n-1);i++)
   {
@@ -66,7 +70,9 @@ void subbyte_htable_word(byte *a,int n)
     for(j=w-1;j>=0;j--)
     {
       r=r << 8;
-      r^=sbox[k*w+j];
+      //r^=sbox[k*w+j];
+      r^=pgm_read_byte(&(sbox[k*w+j]));
+
     }
     T[k][0]=r;
     for(i=1;i<n;i++)

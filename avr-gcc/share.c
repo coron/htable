@@ -15,9 +15,9 @@ uint32_t xorshf96(void) {
   return z;
 }
 
-void refresh(byte a[],int n)
+void refresh(byte a[],uint8_t n)
 {
-  int i;
+  uint8_t i;
   for(i=1;i<n;i++)
   {
     byte tmp=xorshf96(); //rand();
@@ -26,26 +26,26 @@ void refresh(byte a[],int n)
   }
 }
 
-void share(byte x,byte a[],int n)
+void share(byte x,byte a[],uint8_t n)
 {
-  int i;
+  uint8_t i;
   a[0]=x;
   for(i=1;i<n;i++)
     a[i]=0;
 }
 
-byte xorop(byte a[],int n)
+byte xorop(byte a[],uint8_t n)
 {
-  int i;
+  uint8_t i;
   byte r=0;
   for(i=0;i<n;i++)
     r^=a[i];
   return r;
 }
 
-byte decode(byte a[],int n)
+byte decode(byte a[],uint8_t n)
 {
-  int i;
+  uint8_t i;
   for(i=0;i<n;i++)
     refresh(a,n);
   return xorop(a,n);

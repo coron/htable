@@ -5,13 +5,13 @@
 //#include <time.h>
 #include <string.h>
 
-void report_time(double dt,int nt,double base)
+void report_time(double dt,uint8_t nt,double base)
 {
   //printf("%f %f\n",((double) dt)/CLOCKS_PER_SEC/nt*1000,dt/base);
   printf("Checkpoint - ReportTime\n");
 }
 
-void check_ciphertext(byte *out,byte *outex,int nbyte)
+void check_ciphertext(byte *out,byte *outex,uint8_t nbyte)
 {
   if(memcmp(out,outex,nbyte)!=0)
   {
@@ -20,9 +20,9 @@ void check_ciphertext(byte *out,byte *outex,int nbyte)
   }
 }
 
-double runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,byte *outex,int nbyte,int nt,double base)
+double runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,byte *outex,uint8_t nbyte,uint8_t nt,double base)
 {
-  int i;
+  uint8_t i;
   //clock_t start,end;
   double dt;
   //start=clock();

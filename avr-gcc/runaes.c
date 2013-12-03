@@ -5,8 +5,8 @@
 
 #include "aes.h"
 #include "aes_rp.h"
-//#include "share.h"
-//#include "aes_share.h"
+#include "share.h"
+#include "aes_share.h"
 //#include "aes_htable.h"
 #include "common.h"
 
@@ -15,7 +15,7 @@
 void printMes(char *s,byte *m)
 {
   printf("%s=",s);
-  int i;
+  uint8_t i;
   for(i=0;i<16;i++) printf("%02x",m[i]);
   printf("\n");
 }
@@ -26,9 +26,9 @@ int main()
   stdout = &my_stdout;
   stderr = &my_stdout;
   
-  int n;
-  int nt=100;
-  int i;
+  uint8_t n;
+  uint8_t nt=100;
+  uint8_t i;
   byte keyex[16]={0x2b,0x7e,0x15,0x16,0x28,0xae,0xd2,0xa6,0xab,0xf7,0x15,0x88,0x09,0xcf,0x4f,0x3c};
 
   byte inex[16]={0x32,0x43,0xf6,0xa8,0x88,0x5a,0x30,0x8d,0x31,0x31,0x98,0xa2,0xe0,0x37,0x07,0x34};
@@ -54,7 +54,7 @@ int main()
 
   printf("Without countermeasure, RP: ");
   runalgo(&aes_rp,in,out,key,outex,16,nt,base);
-/*
+
   for(n=3;n<=9;n+=2)
   {
     printf("n=%d\n",n);
@@ -63,14 +63,14 @@ int main()
     dt=run_aes_share(in,out,key,n,&subbyte_rp_share,nt);
     report_time(dt,nt,base);
     check_ciphertext(out,outex,16);
-
+/*
     printf("  With randomized table : ");
     dt=run_aes_share(in,out,key,n,&subbyte_htable_word,nt);
     report_time(dt,nt,base);
     check_ciphertext(out,outex,16);
-
-  }
 */
+  }
+
 }
 
 

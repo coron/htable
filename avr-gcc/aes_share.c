@@ -3,10 +3,10 @@
 #include <stdlib.h>
 //#include <time.h>
 
-void shiftrows_share(byte *stateshare[16],int n)
+void shiftrows_share(byte *stateshare[16],uint8_t n)
 {
   byte m;
-  int i;
+  uint8_t i;
   for(i=0;i<n;i++)
   {
     m=stateshare[1][i];
@@ -30,10 +30,10 @@ void shiftrows_share(byte *stateshare[16],int n)
   }
 }
 
-void mixcolumns_share(byte *stateshare[16],int n)
+void mixcolumns_share(byte *stateshare[16],uint8_t n)
 {
   byte ns[16];
-  int i,j;
+  uint8_t i,j;
   for(i=0;i<n;i++)
   {
     for(j=0;j<4;j++)
@@ -48,26 +48,26 @@ void mixcolumns_share(byte *stateshare[16],int n)
   }
 }
 
-void addroundkey_share(byte *stateshare[16],byte *wshare[176],int round,int n)
+void addroundkey_share(byte *stateshare[16],byte *wshare[176],uint8_t round,uint8_t n)
 {
-  int i,j;
+  uint8_t i,j;
   for(i=0;i<16;i++)
     for(j=0;j<16;j++)
       stateshare[i][j]^=wshare[16*round+i][j];
 }
 
-void subbytestate_share(byte *stateshare[16],int n,void (*subbyte_share_call)(byte *,int))
+void subbytestate_share(byte *stateshare[16],uint8_t n,void (*subbyte_share_call)(byte *,uint8_t))
 {
-  int i;
+  uint8_t i;
   for(i=0;i<16;i++)
     subbyte_share_call(stateshare[i],n);
 } 
 
 // AES with shares. The subbyte computation with shares is given as parameter
-void aes_share_subkeys(byte in[16],byte out[16],byte *wshare[176],int n,void (*subbyte_share_call)(byte *,int))
+void aes_share_subkeys(byte in[16],byte out[16],byte *wshare[176],uint8_t n,void (*subbyte_share_call)(byte *,uint8_t))
 {
-  int i,j;
-  int round=0;
+  uint8_t i,j;
+  uint8_t round=0;
 
   byte *stateshare[16];
 
@@ -99,31 +99,30 @@ void aes_share_subkeys(byte in[16],byte out[16],byte *wshare[176],int n,void (*s
   }
 }
 
-double run_aes_share(byte in[16],byte out[16],byte key[16],int n,void (*subbyte_share_call)(byte *,int),int nt)
+double run_aes_share(byte in[16],byte out[16],byte key[16],uint8_t n,void (*subbyte_share_call)(byte *,uint8_t),uint8_t nt)
 {
-  printf("begin run_aes_share\n");
-  int i;
+  uint8_t i;
   byte w[176];
   byte *wshare[176];
   //clock_t start,end;
-  printf("before keyexpansion in run_aes_share\n");
   keyexpansion(key,w);
-
   for(i=0;i<176;i++)
   {
     wshare[i]=(byte *) malloc(n*sizeof(byte));
     share(w[i],wshare[i],n);
     refresh(wshare[i],n);
   }
- 
+  printf("after first for in run_aes_share\n");
   //start=clock();
   for(i=0;i<nt;i++)
     aes_share_subkeys(in,out,wshare,n,subbyte_share_call);
   //end=clock();
+  printf("after second for in run_aes_share\n");
 
   for(i=0;i<176;i++)
     free(wshare[i]);
-
+  printf("after third for in run_aes_share\n");
+  
   return 1;//(double) (end-start);
 }
   

@@ -23,4 +23,6 @@ double run_aes(byte in[16],byte out[16],byte key[16],uint8_t nt);
 
 void testaes();
 
+void keyexpansion(byte *key,byte *w);
+
 #endif

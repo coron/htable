@@ -22,8 +22,8 @@ static int output_char(char c, FILE *stream)
 static FILE my_stdout = FDEV_SETUP_STREAM(output_char, NULL, _FDEV_SETUP_WRITE);
 ////////////////////////////////
 
-void report_time(double dt,int nt,double base);
-void check_ciphertext(byte *out,byte *outex,int nbyte);
-double runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,byte *outex,int nbyte,int nt,double base);
+void report_time(double dt,uint8_t nt,double base);
+void check_ciphertext(byte *out,byte *outex,uint8_t nbyte);
+double runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,byte *outex,uint8_t nbyte,uint8_t nt,double base);
 
 #endif
