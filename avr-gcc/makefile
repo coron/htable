@@ -8,14 +8,14 @@ AESOBJ = aes.o aes_rp.o share.o aes_share.o aes_htable.o runaes.o common.o
 all : runaes.elf
 
 runaes.elf : $(AESOBJ)
-	avr-gcc -g -mmcu=$(mcu) -O3 -o $@ $(AESOBJ)
+	avr-gcc -mmcu=$(mcu) -O3 -o $@ $(AESOBJ)
 
 
 #runaes_normal.out : $(AESOBJ_norm)
 #        avr-gcc -g -mmcu=$(mcu) -Os -o runaes_normal.out $(AESOBJ_norm)
 
 %.o: %.c 
-	avr-gcc -g -mmcu=$(mcu) -O3 -o $@ -c $<
+	avr-gcc -mmcu=$(mcu) -O3 -o $@ -c $<
 
 clean:
 	rm -f *.o *.elf

@@ -1,9 +1,9 @@
 #include "common.h"
 
-#include <stdio.h>
 #include <stdlib.h>
 //#include <time.h>
 #include <string.h>
+#include <avr/pgmspace.h>
 
 void report_time(double dt,uint8_t nt,double base)
 {
@@ -11,9 +11,9 @@ void report_time(double dt,uint8_t nt,double base)
   printf("Checkpoint - ReportTime\n");
 }
 
-void check_ciphertext(byte *out,byte *outex,uint8_t nbyte)
+void check_ciphertext(byte *out,const byte *outex,uint8_t nbyte)
 {
-  if(memcmp(out,outex,nbyte)!=0)
+  if(memcmp_PF(out,(uint_farptr_t)outex,nbyte)!=0)
   {
     fprintf(stderr,"Error: incorrect ciphertext\n");
     //exit(EXIT_FAILURE);

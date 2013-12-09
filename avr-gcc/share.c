@@ -20,7 +20,7 @@ void refresh(byte a[],uint8_t n)
   uint8_t i;
   for(i=1;i<n;i++)
   {
-    byte tmp=xorshf96(); //rand();
+    byte tmp=(byte)xorshf96(); //rand();
     a[0]=a[0] ^ tmp;
     a[i]=a[i] ^ tmp;
   }
@@ -32,6 +32,8 @@ void share(byte x,byte a[],uint8_t n)
   a[0]=x;
   for(i=1;i<n;i++)
     a[i]=0;
+  //printf("after for in share\n");
+
 }
 
 byte xorop(byte a[],uint8_t n)
