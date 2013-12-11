@@ -52,7 +52,7 @@ void addroundkey_share(byte *stateshare[16],byte *wshare[176],int round,int n)
 {
   int i,j;
   for(i=0;i<16;i++)
-    for(j=0;j<16;j++)
+    for(j=0;j<n;j++)
       stateshare[i][j]^=wshare[16*round+i][j];
 }
 
