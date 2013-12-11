@@ -8,7 +8,7 @@
 #include "share.h"
 #include "aes_share.h"
 #include "aes_htable.h"
-#include "common.h"      
+#include "common.h"
 
 void printMes(char *s,byte *m)
 {
@@ -32,13 +32,13 @@ int main()
   byte in[16],out[16];
   byte key[16];
 
-  //printMes("in",inex);
-  //printMes("key",keyex);
+  printMes("in",inex);
+  printMes("key",keyex);
 
   for(i=0;i<16;i++) key[i]=keyex[i];
   for(i=0;i<16;i++) in[i]=inex[i];
 
-  int dt,base;
+  double dt,base;
 
   printf("Without countermeasure, plain: ");
   dt=run_aes(in,out,key,nt);
