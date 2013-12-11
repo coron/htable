@@ -309,7 +309,7 @@ void multshare(byte *a,byte *b,byte *c,uint8_t n)
   {
     for(j=i+1;j<n;j++)
     {
-      byte tmp=(byte)xorshf96(); //rand();
+      byte tmp=xorshf96(); //rand();
       byte tmp2=(tmp ^ multtable(a[i],b[j])) ^ multtable(a[j],b[i]);
       c[i]^=tmp;
       c[j]^=tmp2;

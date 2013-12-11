@@ -20,7 +20,7 @@ void check_ciphertext(byte *out,const byte *outex,uint8_t nbyte)
   }
 }
 
-double runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,byte *outex,uint8_t nbyte,uint8_t nt,double base)
+double runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,const byte *outex,uint8_t nbyte,uint8_t nt,double base)
 {
   uint8_t i;
   //clock_t start,end;

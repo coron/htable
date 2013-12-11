@@ -137,7 +137,7 @@ double run_aes_share(byte in[16],byte out[16],byte key[16],uint8_t n,void (*subb
 
   for(i=0;i<176;i++)
     free(wshare[i]);
-  printf("after third for in run_aes_share\n");
+  //printf("after third for in run_aes_share\n");
   
   return 1;//(double) (end-start);
 }

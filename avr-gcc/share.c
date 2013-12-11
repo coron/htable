@@ -20,7 +20,7 @@ void refresh(byte a[],uint8_t n)
   uint8_t i;
   for(i=1;i<n;i++)
   {
-    byte tmp=(byte)xorshf96(); //rand();
+    byte tmp=xorshf96(); //rand();
     a[0]=a[0] ^ tmp;
     a[i]=a[i] ^ tmp;
   }

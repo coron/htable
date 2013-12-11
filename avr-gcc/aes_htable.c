@@ -10,7 +10,7 @@
 #define DIV 4
 
 
-typedef uint16_t word;
+typedef uint32_t word;
 
 void subbyte_htable(byte *a,uint8_t n)
 {
@@ -20,17 +20,18 @@ void subbyte_htable(byte *a,uint8_t n)
 
   byte b[n];
 
-  uint8_t i,j,k;
+  uint8_t i,j;
+  uint16_t k;
 
-  printf("before for in subbyte_htable for loop\n");
+  //printf("before for in subbyte_htable for loop\n");
 
   
   for(k=0;k<K;k++){
     share(pgm_read_byte(&(sbox[k])),T[k],n);
-    printf("after share inside for in subbyte_htable\n");
+    //printf("after share inside for in subbyte_htable\n");
   }
     //share(sbox[k],T[k],n);
-  printf("after 1st for in subbyte_htable for loop\n");
+  //printf("after 1st for in subbyte_htable for loop\n");
   
   for(i=0;i<(n-1);i++)
   {
@@ -46,16 +47,16 @@ void subbyte_htable(byte *a,uint8_t n)
     }
   }
   
-  printf("after 2nd for in subbyte_htable for loop\n");
+  //printf("after 2nd for in subbyte_htable for loop\n");
 
   
   for(j=0;j<n;j++)
     b[j]=T[a[n-1]][j];
-  printf("after 3rd for in subbyte_htable for loop\n");
+  //printf("after 3rd for in subbyte_htable for loop\n");
 
   refresh(b,n);
   for(j=0;j<n;j++) a[j]=b[j];
-  printf("after 4th for in subbyte_htable for loop\n");
+  //printf("after 4th for in subbyte_htable for loop\n");
 
 }
 
@@ -135,7 +136,8 @@ void subbyte_htable_word(byte *a,uint8_t n)
   uint8_t w=sizeof(word); // number of bytes to store in a word
   word T[K/w][n];
   word Tp[K/w][n];
-  uint8_t i,k,k2,j;
+  uint8_t i,k2,j;
+  uint16_t k;
   word r;
   word b[n];
   byte x;
@@ -157,7 +159,7 @@ void subbyte_htable_word(byte *a,uint8_t n)
     for(i=1;i<n;i++)
       T[k][i]=0;
   }
-  printf("after 1st for in subbyte_htable_word for loop\n");
+  //printf("after 1st for in subbyte_htable_word for loop\n");
 
   for(i=0;i<(n-1);i++)
   {
