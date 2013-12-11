@@ -5,11 +5,16 @@ This code is developed for AVR-GCC C compiler for AVR. It is tested on ATMEGA128
 What is implemented
 -------------------
 
-[*] AES without countermeasure
+[x] AES without countermeasure
+
 [ ] DES without countermeasure
-[*] AES with Rivain-Prouff countermeasure
+
+[x] AES with Rivain-Prouff countermeasure
+
 [ ] DES with Carlet et al. countermeasure, with the Parity-Split method for Sbox computation (requiring 10 non-linear multiplications), and the improved method from Roy-Vivek (requiring only 7 non-linear multiplications). The latter is used by default.
-[*] AES with the new anti-DPA countermeasure based on table recomputation.
+
+[x] AES with the new anti-DPA countermeasure based on table recomputation.
+
 [ ] DES with the new anti-DPA countermeasure based on table recomputation.
 
 Notes
