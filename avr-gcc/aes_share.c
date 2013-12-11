@@ -80,7 +80,6 @@ void aes_share_subkeys(byte in[16],byte out[16],byte *wshare[176],uint8_t n,void
   }  
 
   addroundkey_share(stateshare,wshare,0,n);
-  printStateShare("\nstateshare=",stateshare[0],n);
 
   for(round=1;round<10;round++)
   { 
@@ -107,7 +106,6 @@ double run_aes_share(byte in[16],byte out[16],byte key[16],uint8_t n,void (*subb
   byte *wshare[176];
   //clock_t start,end;
   keyexpansion(key,w);
-  printMesSRAM("\nw=",w);
   
   for(i=0;i<176;i++)
   {
