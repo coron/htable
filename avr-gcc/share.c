@@ -32,8 +32,6 @@ void share(byte x,byte a[],uint8_t n)
   a[0]=x;
   for(i=1;i<n;i++)
     a[i]=0;
-  //printf("after for in share\n");
-
 }
 
 byte xorop(byte a[],uint8_t n)

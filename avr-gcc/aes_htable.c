@@ -16,22 +16,15 @@ void subbyte_htable(byte *a,uint8_t n)
 {
   byte T[K][n];
   byte Tp[K][n];
-  //byte **Tp;
-
   byte b[n];
 
   uint8_t i,j;
   uint16_t k;
-
-  //printf("before for in subbyte_htable for loop\n");
-
   
   for(k=0;k<K;k++){
-    share(pgm_read_byte(&(sbox[k])),T[k],n);
-    //printf("after share inside for in subbyte_htable\n");
-  }
     //share(sbox[k],T[k],n);
-  //printf("after 1st for in subbyte_htable for loop\n");
+    share(pgm_read_byte(&(sbox[k])),T[k],n);
+  }
   
   for(i=0;i<(n-1);i++)
   {
@@ -47,17 +40,11 @@ void subbyte_htable(byte *a,uint8_t n)
     }
   }
   
-  //printf("after 2nd for in subbyte_htable for loop\n");
-
-  
   for(j=0;j<n;j++)
     b[j]=T[a[n-1]][j];
-  //printf("after 3rd for in subbyte_htable for loop\n");
 
   refresh(b,n);
   for(j=0;j<n;j++) a[j]=b[j];
-  //printf("after 4th for in subbyte_htable for loop\n");
-
 }
 
 void subbyte_htable_low_mem(byte *a,uint8_t n)
@@ -65,21 +52,15 @@ void subbyte_htable_low_mem(byte *a,uint8_t n)
   
   byte T[K/DIV][n];
   byte Tp[K/DIV][n];
-  //byte **Tp;
   byte b[n];
 
   uint8_t i,j,k,l,kk;
 
   for(l=0;l<DIV;l++){
   
-  //printf("before for in subbyte_htable_low_mem for loop\n");
-
   for(k=(l*K)/DIV,kk=0;kk<K/DIV;k++,kk++){
     share(pgm_read_byte(&(sbox[k])),T[kk],n);
-    //printf("after share inside for in subbyte_htable_low_mem\n");
   }
-    //share(sbox[k],T[k],n);
-  //printf("after 1st for in subbyte_htable_low_mem for loop\n");
 
   /*
     Tp = (byte**) malloc(K*sizeof(byte*));
@@ -103,16 +84,11 @@ void subbyte_htable_low_mem(byte *a,uint8_t n)
     }
   }
   
-  //printf("after 2nd for in subbyte_htable_low_mem for loop\n");
-
-  
   for(j=0;j<n;j++)
     b[j]=T[a[n-1]][j];
-  //printf("after 3rd for in subbyte_htable_low_mem for loop\n");
-
+  
   refresh(b,n);
   for(j=0;j<n;j++) a[j]=b[j];
-  //printf("after 4th for in subbyte_htable_low_mem for loop\n");
   
   }
 
@@ -143,8 +119,6 @@ void subbyte_htable_word(byte *a,uint8_t n)
   byte x;
   byte c[n];
   
-  printf("before for in subbyte_htable_word for loop\n");
-
   for(k=0;k<K/w;k++)
   {
     r=0;
@@ -159,7 +133,6 @@ void subbyte_htable_word(byte *a,uint8_t n)
     for(i=1;i<n;i++)
       T[k][i]=0;
   }
-  //printf("after 1st for in subbyte_htable_word for loop\n");
 
   for(i=0;i<(n-1);i++)
   {
