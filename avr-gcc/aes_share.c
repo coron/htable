@@ -50,11 +50,12 @@ void mixcolumns_share(byte *stateshare[16],uint8_t n)
 
 void addroundkey_share(byte *stateshare[16],byte *wshare[176],uint8_t round,uint8_t n)
 {
+  //printStateShare("\nstateshare0=",stateshare[0],n);
+  //printWShare("wshare",wshare,n);
   uint8_t i,j;
   for(i=0;i<16;i++)
-    for(j=0;j<16;j++)
-      stateshare[i][j]=stateshare[i][j]^wshare[16*round+i][j];
-//      stateshare[i][j]^=wshare[16*round+i][j];
+    for(j=0;j<n;j++)
+      stateshare[i][j]^=wshare[16*round+i][j];
 }
 
 void subbytestate_share(byte *stateshare[16],uint8_t n,void (*subbyte_share_call)(byte *,uint8_t))
@@ -79,10 +80,14 @@ void aes_share_subkeys(byte in[16],byte out[16],byte *wshare[176],uint8_t n,void
     stateshare[i]=(byte*) malloc(n*sizeof(byte));
     share(in[i],stateshare[i],n);
     refresh(stateshare[i],n);
+    printStateShare("\nstateshare=",stateshare[i],n);
   }  
+
   //printf("after first for in aes_share_subkeys\n");
 
   addroundkey_share(stateshare,wshare,0,n);
+  printStateShare("\nstateshare=",stateshare[0],n);
+
   //printf("after addroundkey_share in aes_share_subkeys\n");
 
   for(round=1;round<10;round++)
@@ -108,6 +113,7 @@ void aes_share_subkeys(byte in[16],byte out[16],byte *wshare[176],uint8_t n,void
 
   for(i=0;i<16;i++)
   {
+    //printStateShare("\nstateshare=",stateshare[i],n);
     out[i]=decode(stateshare[i],n);
     free(stateshare[i]);
   }
@@ -122,12 +128,17 @@ double run_aes_share(byte in[16],byte out[16],byte key[16],uint8_t n,void (*subb
   byte *wshare[176];
   //clock_t start,end;
   keyexpansion(key,w);
+  //printf("w=%s\nwshare=%s\n",w,&wshare);
+  printMesSRAM("\nw=",w);
+  
   for(i=0;i<176;i++)
   {
     wshare[i]=(byte *) malloc(n*sizeof(byte));
     share(w[i],wshare[i],n);
     refresh(wshare[i],n);
   }
+    //printWShare("wshare",wshare,n);
+
   //printf("after first for in run_aes_share\n");
   //start=clock();
   for(i=0;i<nt;i++)

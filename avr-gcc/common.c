@@ -37,3 +37,39 @@ double runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,c
 }
 
 
+void printMes(char *s,const byte *m)
+{
+  printf("%s=",s);
+  uint8_t i;
+  for(i=0;i<16;i++) printf("%02x",pgm_read_byte(&(m[i])));
+  printf("\n");
+}
+
+void printMesSRAM(char *s,byte *m)
+{
+  printf("%s=",s);
+  uint8_t i;
+  for(i=0;i<16;i++) printf("%02x",m[i]);
+  printf("\n");
+}
+
+void printStateShare(char *s,byte *m, uint8_t shares)
+{
+  printf("%s=",s);
+  uint8_t i;
+  for(i=0;i<shares;i++) printf("%02x",m[i]);
+  printf("\n");
+}
+
+void printWShare(char *s,byte *m[176], uint8_t shares)
+{
+  printf("%s=",s);
+  uint8_t i,j;
+  for(i=0;i<176;i++) {
+    printf("\n");
+    for(j=0;j<shares;j++)
+	printf("%02x",m[i][j]);
+    
+  }
+  printf("\n");
+}

@@ -17,21 +17,7 @@ const byte inex[16] PROGMEM={0x32,0x43,0xf6,0xa8,0x88,0x5a,0x30,0x8d,0x31,0x31,0
 
 const byte outex[16] PROGMEM={0x39,0x25,0x84,0x1d,0x02,0xdc,0x09,0xfb,0xdc,0x11,0x85,0x97,0x19,0x6a,0x0b,0x32};
 
-void printMes(char *s,const byte *m)
-{
-  printf("%s=",s);
-  uint8_t i;
-  for(i=0;i<16;i++) printf("%02x",pgm_read_byte(&(m[i])));
-  printf("\n");
-}
 
-void printMesSRAM(char *s,byte *m)
-{
-  printf("%s=",s);
-  uint8_t i;
-  for(i=0;i<16;i++) printf("%02x",m[i]);
-  printf("\n");
-}
 
 int main()
 {

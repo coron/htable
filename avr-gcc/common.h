@@ -25,5 +25,9 @@ static FILE my_stdout = FDEV_SETUP_STREAM(output_char, NULL, _FDEV_SETUP_WRITE);
 void report_time(double dt,uint8_t nt,double base);
 void check_ciphertext(byte *out,const byte *outex,uint8_t nbyte);
 double runalgo(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,const byte *outex,uint8_t nbyte,uint8_t nt,double base);
+void printMes(char *s,const byte *m);
 
+void printMesSRAM(char *s,byte *m);
+void printStateShare(char *s,byte *m, uint8_t shares);
+void printWShare(char *s,byte *m[176], uint8_t shares);
 #endif
