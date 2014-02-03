@@ -1,5 +1,6 @@
 #include "aes_rp.h"
 #include "aes.h"
+#include "share.h"
 
 #include <stdio.h>
 #include <stdlib.h>

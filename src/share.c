@@ -1,9 +1,12 @@
 #include "share.h"
 
 static unsigned long x=123456789, y=362436069, z=521288629;
+static unsigned int randcount=0;
 
 unsigned long xorshf96(void) {   
   unsigned long t;
+  randcount++;
+
   x ^= x << 16;
   x ^= x >> 5;
   x ^= x << 1;
@@ -13,6 +16,16 @@ unsigned long xorshf96(void) {
   y = z;
   z = t ^ x ^ y; 
   return z;
+}
+
+void init_randcount()
+{
+  randcount=0;
+}
+
+unsigned int get_randcount()
+{
+  return randcount;
 }
 
 void refresh(byte a[],int n)

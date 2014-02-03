@@ -7,6 +7,7 @@
 #include "des.h"
 #include "des_carlet.h"
 #include "des_htable.h"
+#include "des_share.h"
 
 void test_des_encrypt()
 {
@@ -29,7 +30,7 @@ void test_des_encrypt()
   printf("Without countermeasure, plain: ");
   dt=run_des(in,out,key,nt);
   base=dt;
-  report_time(dt,nt,base);
+  report_time(dt,nt,base,0);
   check_ciphertext(out,outex,8);
 
   printf("Without countermeasure, Carlet: ");
@@ -39,13 +40,15 @@ void test_des_encrypt()
   {
     printf("n=%d\n",n);
     printf("  With Carlet countermeasure: ");
+    init_randcount();
     dt=run_des_share(in,out,key,n,&polyRoy_share,nt); // &polygen_share
-    report_time(dt,nt,base);
+    report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,8);
 
     printf("  With randomized table: ");
+    init_randcount();
     dt=run_des_share(in,out,key,n,&sbox_htable_word,nt);
-    report_time(dt,nt,base);
+    report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,8);
   }
 }

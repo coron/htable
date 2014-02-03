@@ -1,4 +1,5 @@
 #include "aes_htable.h"
+#include "share.h"
 
 #include <string.h>
 
@@ -86,6 +87,7 @@ void subbyte_htable_word(byte *a,int n)
   }
 
   memcpy(b,T[a[n-1]/w],n*sizeof(word));
+  refreshword(b,n);
 
   byte Ts[w][n];
   byte Tsp[w][n];

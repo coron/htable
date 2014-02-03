@@ -1,5 +1,6 @@
 #include "des_share.h"
 #include "des.h"
+#include "share.h"
 
 #include <stdlib.h>
 #include <string.h>

@@ -1,6 +1,8 @@
 #include "des_htable.h"
 #include "des.h"
 
+#include "share.h"
+
 #include <string.h>
 
 #define K 64

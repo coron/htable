@@ -44,7 +44,7 @@ int main()
   dt=run_aes(in,out,key,nt);
   base=dt;
   check_ciphertext(out,outex,16);
-  report_time(dt,nt,base);
+  report_time(dt,nt,base,0);
 
   printf("Without countermeasure, RP: ");
   runalgo(&aes_rp,in,out,key,outex,16,nt,base);
@@ -53,13 +53,15 @@ int main()
   {
     printf("n=%d\n",n);
     printf("  With RP countermeasure: ");
+    init_randcount();
     dt=run_aes_share(in,out,key,n,&subbyte_rp_share,nt);
-    report_time(dt,nt,base);
+    report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,16);
 
     printf("  With randomized table : ");
+    init_randcount();
     dt=run_aes_share(in,out,key,n,&subbyte_htable_word,nt);
-    report_time(dt,nt,base);
+    report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,16);
   }
 }

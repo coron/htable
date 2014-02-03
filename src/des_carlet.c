@@ -1,5 +1,6 @@
 #include "des_carlet.h"
 #include "des.h"
+#include "share.h"
 
 #include <stdio.h>
 #include <stdlib.h>

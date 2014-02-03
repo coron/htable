@@ -73,6 +73,7 @@ byte inverse(byte x)
     y++;
     if(mult(x,y)==1) return y;
   }
+  return y;
 }
 
 byte bit(byte x,int i)
@@ -126,6 +127,7 @@ byte invsubbyte(byte x)
     if(sbox[y]==x) return y;
     y++;
   }
+  return y;
 }
 
 void invsubbytestate(byte state[16])

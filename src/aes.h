@@ -16,7 +16,11 @@ byte subbyte(byte x);
 void printstate(byte state[16]);
 
 void shiftrows(byte state[16]);
+void mixcolumns(byte *state);
+void subbytestate(byte *state);
 void addroundkey(byte *state,byte *w,int round);
+
+void keyexpansion(byte *key,byte *w);
 
 void aes(byte in[16],byte out[16],byte key[16]);
 int run_aes(byte in[16],byte out[16],byte key[16],int nt);

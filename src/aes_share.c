@@ -1,4 +1,6 @@
 #include "aes_share.h"
+#include "share.h"
+#include "aes.h"
 
 #include <stdlib.h>
 #include <time.h>
@@ -116,6 +118,7 @@ int run_aes_share(byte in[16],byte out[16],byte key[16],int n,void (*subbyte_sha
   }
  
   start=clock();
+
   for(i=0;i<nt;i++)
     aes_share_subkeys(in,out,wshare,n,subbyte_share_call);
   end=clock();
