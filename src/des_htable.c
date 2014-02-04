@@ -56,13 +56,15 @@ void refreshword(word a[],int n)
 void sbox_htable_word(int ii,byte *a,int n)
 {
   int w=2*sizeof(word); // number of nibbles to store in a word
-  word T[K/w][n];
-  word Tp[K/w][n];
-  int i,k,k2,j;
-  word r;
-  word b[n];
-  byte x;
-  byte c[n];
+  word T[K/w][n];   // n*64 bytes
+  word Tp[K/w][n];  // n*64 bytes
+  int i,k,k2,j;     // 16 bytes
+  word r;           // 4 bytes
+  word b[n];        // 4*n bytes (for 32-bit registers)
+  byte x;           // 1 byte
+  byte c[n];        // n bytes
+
+  // Memory: 133*x+21
 
   byte *S=sbox+ii*64;
 

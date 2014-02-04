@@ -50,16 +50,18 @@ void refreshword(word a[],int n)
   }
 }
 
-void subbyte_htable_word(byte *a,int n)
+void subbyte_htable_word(byte *a,int n)  // n+4 bytes
 {
   int w=sizeof(word); // number of bytes to store in a word
-  word T[K/w][n];
-  word Tp[K/w][n];
-  int i,k,k2,j;
-  word r;
-  word b[n];
-  byte x;
-  byte c[n];
+  word T[K/w][n];  // n*256 bytes
+  word Tp[K/w][n]; // n*256 bytes
+  int i,k,k2,j;    // 16 bytes
+  word r;          // 4 bytes
+  word b[n];       // 4*n bytes (for 32-bit registers)
+  byte x;          // 1 bytes
+  byte c[n];       // n bytes
+
+  // Memory:  518*n+25
 
   for(k=0;k<K/w;k++)
   {
@@ -88,9 +90,10 @@ void subbyte_htable_word(byte *a,int n)
 
   memcpy(b,T[a[n-1]/w],n*sizeof(word));
   refreshword(b,n);
-
-  byte Ts[w][n];
-  byte Tsp[w][n];
+  
+  // not counted above because the tables T and Tp can be discarded
+  byte Ts[w][n];   // 4*n bytes
+  byte Tsp[w][n];  // 4*n bytes
 
   for(k=0;k<w;k++)
     for(i=0;i<n;i++)

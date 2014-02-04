@@ -293,7 +293,8 @@ void square_share(byte *a,int n)
 // The shared multiplication SecMult of Rivain-Prouff
 void multshare(byte *a,byte *b,byte *c,int n)
 {
-  int i,j;
+  // Memory: 4 bytes
+  int i,j; 
   for(i=0;i<n;i++)
     c[i]=multtable(a[i],b[i]);
 
@@ -311,10 +312,11 @@ void multshare(byte *a,byte *b,byte *c,int n)
 
 void subbyte_rp_share(byte *a,int n)
 {
+  // Memory: 5*n+5 byte 
   int i;
   byte z[n];
   memcpy(z,a,n);
-  square_share(z,n);    // z=x^2
+  square_share(z,n);    // z=x^2     
 
   byte y[n];
   multshare(z,a,y,n);   // y=z*x=x^3

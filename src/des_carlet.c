@@ -357,6 +357,13 @@ void polyRoy_share(int ii,byte *x,int n)
   byte zi[10][n];
   byte v[7][n];
   byte y[n];
+  byte x18[n];
+  byte x36[n];
+  byte temp[n];
+  byte temp2[n];
+  byte temp3[n];
+
+  // Memory: 23*n+3
 
   byte *pol=Roy+70*ii;
 
@@ -373,9 +380,7 @@ void polyRoy_share(int ii,byte *x,int n)
       nmult++;
     }
   }
-  byte x18[n];
-  byte x36[n];
-
+ 
   square_share(zi[9],x18,n);
   square_share(x18,x36,n);
 
@@ -394,14 +399,12 @@ void polyRoy_share(int ii,byte *x,int n)
     v[4][k]^=x18[k];
   }
 
-  byte temp[n];
+  
   multshare(v[1],v[2],temp,n);
   for(k=0;k<n;k++) temp[k]^=v[3][k];
 
-  byte temp2[n];
   multshare(temp,v[0],temp2,n);
   
-  byte temp3[n];
   multshare(v[4],v[5],temp3,n);
 
   nmult+=3;
