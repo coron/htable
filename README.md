@@ -1,7 +1,8 @@
 Higher Order Countermeasures for AES and DES
 ======
 
-We provide a C implementation of the anti-DPA countermeasure based on table recomputation described in [IACR ePrint Report 2013/700](http://eprint.iacr.org/2013/700).
+We provide a C implementation of the anti-DPA countermeasure based on table recomputation described in [IACR ePrint Report 2013/700](http://eprint.iacr.org/2013/700). 
+Update: we also provide a C implementation of the anti-DPA countermeasure based on Carlet et al. implemented with the Coron-Roy-Vivek technique from CHES 2014.
 
 The countermeasure is shown to be secure against a t-th order DPA attack, when the number of shares n is such that n>=2t+1.
 
@@ -13,7 +14,7 @@ What is implemented
 * AES without countermeasure
 * DES without countermeasure
 * AES with Rivain-Prouff countermeasure
-* DES with Carlet et al. countermeasure, with the Parity-Split method for Sbox computation (requiring 10 non-linear multiplications), and the improved method from Roy-Vivek (requiring only 7 non-linear multiplications). The latter is used by default.
+* DES with Carlet et al. countermeasure, with the Parity-Split method for Sbox computation (requiring 10 non-linear multiplications), and the improved method from Roy-Vivek (requiring only 7 non-linear multiplications). The latter is used by default. Update: a further improved method from Coron-Roy-Vivek (CHES 2014) is also implemented (requiring only 4 non-linear multiplications). 
 * AES with the new anti-DPA countermeasure based on table recomputation.
 * DES with the new anti-DPA countermeasure based on table recomputation.
 
