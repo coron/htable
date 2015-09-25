@@ -1,3 +1,7 @@
+// This program is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License version 2 as published
+// by the Free Software Foundation.
+
 #include "share.h"
 
 static unsigned long x=123456789, y=362436069, z=521288629;

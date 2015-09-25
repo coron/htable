@@ -1,3 +1,7 @@
+// This program is free software; you can redistribute it and/or modify it
+// under the terms of the GNU General Public License version 2 as published
+// by the Free Software Foundation.
+
 /* This source file implements the Coron_Roy_Vivek (CRV) polynomial evaluation technique, from CHES 2014, with shared inputs. This code was written by Srinivas Vivek on Oct 15, 2014. */
 
 
