@@ -64,7 +64,25 @@ int main()
 
     printf("  With randomized table : ");
     init_randcount();
+    dt=run_aes_share(in,out,key,n,&subbyte_htable,nt); 
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,16);
+
+    printf("  With randomized table word: ");
+    init_randcount();
     dt=run_aes_share(in,out,key,n,&subbyte_htable_word,nt);
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,16);
+
+    printf("  With randomized table inc: ");
+    init_randcount();
+    dt=run_aes_share(in,out,key,n,&subbyte_htable_inc,nt); 
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,16);
+
+    printf("  With randomized table word inc: ");
+    init_randcount();
+    dt=run_aes_share(in,out,key,n,&subbyte_htable_word_inc,nt); 
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,16);
   }
