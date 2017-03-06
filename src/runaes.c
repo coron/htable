@@ -68,9 +68,9 @@ int main()
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,16);
 
-    printf("  With randomized table word: ");
+    printf("  With randomized table trans : ");
     init_randcount();
-    dt=run_aes_share(in,out,key,n,&subbyte_htable_word,nt);
+    dt=run_aes_share(in,out,key,n,&subbyte_htable_trans,nt); 
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,16);
 
@@ -80,11 +80,31 @@ int main()
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,16);
 
+    printf("  With randomized table inc trans: ");
+    init_randcount();
+    dt=run_aes_share(in,out,key,n,&subbyte_htable_inc_trans,nt);
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,16);
+
+    printf("  With randomized table word: ");
+    init_randcount();
+    dt=run_aes_share(in,out,key,n,&subbyte_htable_word,nt);
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,16);
+
     printf("  With randomized table word inc: ");
     init_randcount();
     dt=run_aes_share(in,out,key,n,&subbyte_htable_word_inc,nt); 
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,16);
+
+    printf("  With randomized table word inc trans: ");
+    init_randcount();
+    dt=run_aes_share(in,out,key,n,&subbyte_htable_word_inc_trans,nt); 
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,16);
+
+    
   }
 }
 
