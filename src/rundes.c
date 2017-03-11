@@ -17,7 +17,7 @@
 void test_des_encrypt()
 {
   int n;
-  int nt=10000;
+  int nt=1000;
   int i;
   byte key[8]={0x5b,0x5a,0x57,0x67,0x6a,0x56,0x67,0x6e};
   byte inex[8]={0x67,0x5a,0x69,0x67,0x5e,0x5a,0x6b,0x5a};
@@ -41,7 +41,7 @@ void test_des_encrypt()
   printf("Without countermeasure, Carlet: ");
   runalgo(des_encrypt_carlet,in,out,key,outex,8,nt,base);
 
-  for(n=3;n<=13;n+=2)
+  for(n=3;n<=10;n++)
   {
     printf("n=%d\n",n);
     printf("  With Carlet (RV13) countermeasure: ");
@@ -59,6 +59,12 @@ void test_des_encrypt()
     printf("  With randomized table: ");
     init_randcount();
     dt=run_des_share(in,out,key,n,&sbox_htable_word,nt);
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,8);
+
+    printf("  With randomized table inc: ");
+    init_randcount();
+    dt=run_des_share(in,out,key,n,&sbox_htable_word_inc,nt);
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,8);
   }

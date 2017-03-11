@@ -5,3 +5,4 @@
 #include "common.h"
 
 void sbox_htable_word(int ii,byte *a,int n);
+void sbox_htable_word_inc(int ii,byte *a,int n);

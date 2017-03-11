@@ -216,7 +216,7 @@ void subbyte_htable_word_inc(byte *a,int n)  // n+4 bytes
     k2=a[i]/w;
 
     for(j=0;j<(i+1);j++)
-      for(k=0;k<K;k++)
+      for(k=0;k<K/w;k++)
 	Tp[j][k]=T[j][k ^ k2];
 
     for(k=0;k<K/w;k++)
