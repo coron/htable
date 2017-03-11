@@ -53,7 +53,7 @@ int main()
   printf("Without countermeasure, RP: ");
   runalgo(&aes_rp,in,out,key,outex,16,nt,base);
 
-  for(n=3;n<=6;n+=1)
+  for(n=3;n<=10;n+=1)
   {
     printf("n=%d\n",n);
     printf("  With RP countermeasure: ");
@@ -83,6 +83,18 @@ int main()
     printf("  With randomized table word inc: ");
     init_randcount();
     dt=run_aes_share(in,out,key,n,&subbyte_htable_word_inc,nt); 
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,16);    
+
+    printf("  With randomized table common shares: ");
+    init_randcount();
+    dt=run_aes_common_share(in,out,key,n,&subbyte_cs_htable,nt); 
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,16);    
+
+    printf("  With randomized table word common shares: ");
+    init_randcount();
+    dt=run_aes_common_share(in,out,key,n,&subbyte_cs_htable_word,nt); 
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,16);    
   }

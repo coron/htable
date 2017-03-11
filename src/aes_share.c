@@ -132,5 +132,77 @@ int run_aes_share(byte in[16],byte out[16],byte key[16],int n,void (*subbyte_sha
 
   return (int) (end-start);
 }
+
+void subbytestate_common_share(byte *stateshare[16],int n,void (*subbyte_common_share_call)(byte *,byte *,int))
+{
+  int i;
+  for(i=0;i<16;i+=2)
+    subbyte_common_share_call(stateshare[i],stateshare[i+1],n);
+} 
+
+// AES with shares. The subbyte computation with shares is given as parameter
+void aes_common_share_subkeys(byte in[16],byte out[16],byte *wshare[176],int n,void (*subbyte_common_share_call)(byte *,byte *,int))
+{
+  int i,j;
+  int round=0;
+
+  byte *stateshare[16];
+
+  for(i=0;i<16;i++)
+  {
+    stateshare[i]=(byte*) malloc(n*sizeof(byte));
+    share(in[i],stateshare[i],n);
+    refresh(stateshare[i],n);
+  }  
+
+  addroundkey_share(stateshare,wshare,0,n);
+
+  for(round=1;round<10;round++)
+  { 
+    subbytestate_common_share(stateshare,n,subbyte_common_share_call);
+    shiftrows_share(stateshare,n);
+    mixcolumns_share(stateshare,n);
+    addroundkey_share(stateshare,wshare,round,n);
+  }
+ 
+  subbytestate_common_share(stateshare,n,subbyte_common_share_call);
+  shiftrows_share(stateshare,n);
+  addroundkey_share(stateshare,wshare,10,n);
+
+  for(i=0;i<16;i++)
+  {
+    out[i]=decode(stateshare[i],n);
+    free(stateshare[i]);
+  }
+}
+
+
+int run_aes_common_share(byte in[16],byte out[16],byte key[16],int n,void (*subbyte_common_share_call)(byte *,byte *,int),int nt)
+{
+  int i;
+  byte w[176];
+  byte *wshare[176];
+  clock_t start,end;
+
+  keyexpansion(key,w);
+
+  for(i=0;i<176;i++)
+  {
+    wshare[i]=(byte *) malloc(n*sizeof(byte));
+    share(w[i],wshare[i],n);
+    refresh(wshare[i],n);
+  }
+ 
+  start=clock();
+
+  for(i=0;i<nt;i++)
+    aes_common_share_subkeys(in,out,wshare,n,subbyte_common_share_call);
+  end=clock();
+
+  for(i=0;i<176;i++)
+    free(wshare[i]);
+
+  return (int) (end-start);
+}
   
 
