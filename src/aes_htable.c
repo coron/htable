@@ -230,6 +230,39 @@ void subbyte_htable_word(byte *a,int n)  // n+4 bytes
   htable_small(a,b,n);
 }
 
+void htable_word_inc(byte *a,int ell,int lam,word T[][K/4],int n)
+{
+  int w=4;
+  word Tp[n][K/4];
+  int i,j,k,k2;
+  
+  int ind=ell;
+
+  for(int i=0;i<lam;i++)
+  {
+    k2=a[i]/w;
+
+    shift_table_word(k2,Tp,T,ind);
+
+    if (ind<n)
+    {
+      for(int k=0;k<K/w;k++)
+	T[ind][k]=0;
+      refresh_table_word(T,Tp,ind);
+    }
+    else
+    {
+      for(int k=0;k<K/w;k++)
+	T[n-1][k]=Tp[n-1][k];
+      refresh_table_word(T,Tp,n-1);
+    }    
+
+    ind+=1;
+    if(ind>n)
+      ind=n;
+  }
+}
+
 void subbyte_htable_word_inc(byte *a,int n)  // n+4 bytes
 {
   int w=sizeof(word); // number of bytes to store in a word w=4
@@ -240,24 +273,9 @@ void subbyte_htable_word_inc(byte *a,int n)  // n+4 bytes
 
   init_table_word(T);
 
-  for(i=0;i<(n-1);i++)
-  {
-    k2=a[i]/w;
+  htable_word_inc(a,1,n-1,T,n);
 
-    shift_table_word(k2,Tp,T,i+1);
-
-    refresh_table_word(T,Tp,i+1);
-
-    for(k=0;k<K/w;k++)
-      T[i+1][k]=0;
-
-    refresh_table_word(T,Tp,i+1);
-  }
-
-  for(j=0;j<n;j++)
-    b[j]=T[j][a[n-1]/w];
-
-  refreshword(b,n);
+  read_htable_word(a[n-1]/4,b,T,n);
   
   htable_small(a,b,n);
 }
@@ -354,4 +372,49 @@ void subbyte_cs_htable_word(byte *a,byte *b,int n)
   htable_small(a,u,n);
   htable_small(b,v,n);
 }
+
+void subbyte_cs_htable_word_inc(byte *a,byte *b,int n)
+{
+  int w=4;
+  int n2=(n+1)/2;
+  byte r[n/2];
+  byte ap[n2],bp[n2];
+
+  common_shares(a,b,r,ap,bp,n);
+
+  word T[n][K/w];
+  
+  init_table_word(T);
+
+  // we start with two output shares
+  int ell=2;
+
+  for(int j=1;j<ell;j++)
+    for(int k=0;k<K/w;k++)
+      T[j][k]=0;
+
+  htable_word_inc(r,ell,n/2,T,n);
+
+  int ell2=ell+n/2;
+  if(ell2>n) ell2=n;
+
+  word T2[n][K/w];
+
+  for(int j=0;j<ell2;j++)
+    for(int k=0;k<K/w;k++)
+      T2[j][k]=T[j][k];
+
+  htable_word_inc(ap,ell2,n2-1,T,n);
+  htable_word_inc(bp,ell2,n2-1,T2,n);
+
+  word u[n];
+  read_htable_word(ap[n2-1]/4,u,T,n);
+
+  word v[n];
+  read_htable_word(bp[n2-1]/4,v,T2,n);
+
+  htable_small(a,u,n);
+  htable_small(b,v,n);
+}
+
 

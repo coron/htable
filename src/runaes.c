@@ -97,6 +97,12 @@ int main()
     dt=run_aes_common_share(in,out,key,n,&subbyte_cs_htable_word,nt); 
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,16);    
+
+    printf("  With randomized table word inc common shares: ");
+    init_randcount();
+    dt=run_aes_common_share(in,out,key,n,&subbyte_cs_htable_word_inc,nt); 
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,16);    
   }
 }
 
