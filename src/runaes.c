@@ -6,13 +6,17 @@
 #include <stdlib.h>
 #include <time.h>
 #include <string.h>
+#include <math.h>
 
 #include "aes.h"
 #include "aes_rp.h"
+#include "aes_rp_prg.h"
 #include "share.h"
 #include "aes_share.h"
 #include "aes_htable.h"
-#include "common.h"      
+#include "common.h"
+#include "prg.h"
+
 
 void printMes(char *s,byte *m)
 {
@@ -25,7 +29,7 @@ void printMes(char *s,byte *m)
 int main()
 {
   int n;
-  int nt=100;
+  int nt=10;
   int i;
   byte keyex[16]={0x2b,0x7e,0x15,0x16,0x28,0xae,0xd2,0xa6,0xab,0xf7,0x15,0x88,0x09,0xcf,0x4f,0x3c};
 
@@ -45,64 +49,67 @@ int main()
   int dt,base;
 
   printf("Without countermeasure, plain: ");
-  dt=run_aes(in,out,key,nt);
-  base=dt;
-  check_ciphertext(out,outex,16);
-  report_time(dt,nt,base,0);
+  base=run_aes(&aes,in,out,key,outex,nt,0);
 
   printf("Without countermeasure, RP: ");
-  runalgo(&aes_rp,in,out,key,outex,16,nt,base);
+  run_aes(&aes_rp,in,out,key,outex,nt,base);
 
-  for(n=3;n<=10;n+=1)
+  for(n=3;n<=6;n+=1)
   {
     printf("n=%d\n",n);
     printf("  With RP countermeasure: ");
-    init_randcount();
-    dt=run_aes_share(in,out,key,n,&subbyte_rp_share,nt);
-    report_time(dt,nt,base,get_randcount());
-    check_ciphertext(out,outex,16);
+    run_aes_share(in,out,key,outex,n,&subbyte_rp_share,nt,base);
+    
+    printf("  With RP countermeasure, with flr: ");
+    int rprg=rprg_flr(n);
+    run_aes_share_prg(in,out,key,outex,n,&subbyte_rp_share_flr,base,nt,rprg);
+    printf(" trand=%d tprgcount=%d\n",rprg*2*n,(480*n+1120)*(n-1));
 
+    printf("  With RP countermeasure, with ilr: ");
+    rprg=rprg_ilr(n);
+    run_aes_share_prg(in,out,key,outex,n,&subbyte_rp_share_ilr,base,nt,rprg);
+    printf(" trand=%d tprgcount=%d\n",8*n*(n-1)*(n-1),(960*n+160)*(n-1));
+
+    printf("  With RP countermeasure, with ilr2: ");
+    rprg=rprg_ilr(n);
+    run_aes_share_prg(in,out,key,outex,n,&subbyte_rp_share_ilr2,base,nt,rprg);
+    printf(" trand=%d tprgcount=%d\n",8*n*(n-1)*(n-1),(480*n+1120)*(n-1));
+
+    printf("  With RP countermeasure, with flr, multiple prg: ");
+    run_aes_share_mprg(in,out,key,outex,n,&subbyte_rp_share_flr_mprg,TFLR,base,nt);
+    printf(" trand=%d\n",(n*n+9*n-10)*(n-1));
+
+    printf("  With RP countermeasure, with ilr, multiple prg: ");
+    run_aes_share_mprg(in,out,key,outex,n,&subbyte_rp_share_ilr_mprg,TILR,base,nt);
+    printf(" trand=%d\n",(12*n-12)*(n-1));
+
+    if(n<=4)
+    {
+      printf(" With RP countermeasure, with flr, mprgmat: ");
+      run_aes_share_mprgmat(in,out,key,outex,n,base,nt);
+      printf(" predicted rand: %d\n",n*(n-1)/2*2*31+3*(n-1)*2*38);
+    }
+    
     printf("  With randomized table : ");
-    init_randcount();
-    dt=run_aes_share(in,out,key,n,&subbyte_htable,nt); 
-    report_time(dt,nt,base,get_randcount());
-    check_ciphertext(out,outex,16);
+    run_aes_share(in,out,key,outex,n,&subbyte_htable,base,nt); 
 
     printf("  With randomized table inc: ");
-    init_randcount();
-    dt=run_aes_share(in,out,key,n,&subbyte_htable_inc,nt); 
-    report_time(dt,nt,base,get_randcount());
-    check_ciphertext(out,outex,16);
+    run_aes_share(in,out,key,outex,n,&subbyte_htable_inc,base,nt); 
 
     printf("  With randomized table word: ");
-    init_randcount();
-    dt=run_aes_share(in,out,key,n,&subbyte_htable_word,nt);
-    report_time(dt,nt,base,get_randcount());
-    check_ciphertext(out,outex,16);
+    run_aes_share(in,out,key,outex,n,&subbyte_htable_word,base,nt);
 
     printf("  With randomized table word inc: ");
-    init_randcount();
-    dt=run_aes_share(in,out,key,n,&subbyte_htable_word_inc,nt); 
-    report_time(dt,nt,base,get_randcount());
-    check_ciphertext(out,outex,16);    
+    run_aes_share(in,out,key,outex,n,&subbyte_htable_word_inc,base,nt); 
 
     printf("  With randomized table common shares: ");
-    init_randcount();
-    dt=run_aes_common_share(in,out,key,n,&subbyte_cs_htable,nt); 
-    report_time(dt,nt,base,get_randcount());
-    check_ciphertext(out,outex,16);    
-
+    run_aes_common_share(in,out,key,outex,n,&subbyte_cs_htable,base,nt); 
+    
     printf("  With randomized table word common shares: ");
-    init_randcount();
-    dt=run_aes_common_share(in,out,key,n,&subbyte_cs_htable_word,nt); 
-    report_time(dt,nt,base,get_randcount());
-    check_ciphertext(out,outex,16);    
+    run_aes_common_share(in,out,key,outex,n,&subbyte_cs_htable_word,base,nt); 
 
     printf("  With randomized table word inc common shares: ");
-    init_randcount();
-    dt=run_aes_common_share(in,out,key,n,&subbyte_cs_htable_word_inc,nt); 
-    report_time(dt,nt,base,get_randcount());
-    check_ciphertext(out,outex,16);    
+    run_aes_common_share(in,out,key,outex,n,&subbyte_cs_htable_word_inc,base,nt); 
   }
 }
 

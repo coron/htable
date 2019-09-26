@@ -3,6 +3,7 @@
 // by the Free Software Foundation.
 
 #include "share.h"
+#include "prg.h"
 
 static unsigned long x=123456789, y=362436069, z=521288629;
 static unsigned int randcount=0;
@@ -32,12 +33,28 @@ unsigned int get_randcount()
   return randcount;
 }
 
+void set_randcount(unsigned int randc)
+{
+  randcount=randc;
+}
+
 void refresh(byte a[],int n)
 {
   int i;
   for(i=1;i<n;i++)
   {
     byte tmp=xorshf96(); //rand();
+    a[0]=a[0] ^ tmp;
+    a[i]=a[i] ^ tmp;
+  }
+}
+
+void refresh_prg(byte a[],int n)
+{
+  int i;
+  for(i=1;i<n;i++)
+  {
+    byte tmp=get_prg();
     a[0]=a[0] ^ tmp;
     a[i]=a[i] ^ tmp;
   }
@@ -63,8 +80,9 @@ byte xorop(byte a[],int n)
 byte decode(byte a[],int n)
 {
   int i;
-  for(i=0;i<n;i++)
-    refresh(a,n);
+  //for(i=0;i<n;i++) // actually this is not needed for AES
+  //  refresh(a,n);
   return xorop(a,n);
 }
+
 

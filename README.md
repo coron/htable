@@ -12,11 +12,14 @@ What is implemented
 -------------------
 
 * AES without countermeasure
-* AES with the Rivain-Prouff countermeasure
-* AES with the table recomputation countermeasure and its variants.
+* AES with the Rivain-Prouff countermeasure [RP10]
+* AES with the table recomputation countermeasure and its variants. [Cor14]
+* AES with various PRG constructions. 
 * DES without countermeasure
-* DES with Carlet et al. countermeasure, with the Parity-Split method for Sbox computation (requiring 10 non-linear multiplications), and the improved method from Roy-Vivek (requiring only 7 non-linear multiplications). The further improved method from Coron-Roy-Vivek (CHES 2014) is also implemented (requiring only 4 non-linear multiplications). 
-* DES with the table recomputation countermeasure and its variants.
+* DES with Carlet et al. countermeasure, with the Parity-Split method for Sbox computation (requiring 10 non-linear multiplications) [CGP+12]
+* DES with the improved method from Roy-Vivek (requiring 7 non-linear multiplications).
+* DES with the [CRV14] method (requiring only 4 non-linear multiplications). 
+* DES with the table recomputation countermeasure and its variants. [Cor14,CRZ17]
 
 Notes
 ----

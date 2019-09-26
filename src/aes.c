@@ -276,18 +276,9 @@ void aes(byte in[16],byte out[16],byte w[176])
     out[i]=state[i];
 }
 
-int run_aes(byte in[16],byte out[16],byte key[16],int nt)
+int run_aes(void (*algo)(byte *,byte *,byte *),byte *in,byte *out,byte *key,byte *outex,int nt,int base)
 {
-  int i;
   byte w[176];
-  clock_t start,end;
-
   keyexpansion(key,w);
-  
-  start=clock();
-  for(i=0;i<nt;i++)
-    aes(in,out,w);
-  end=clock();
-
- return (int) (end-start);
+  return runalgo(&aes,in,out,w,outex,16,nt,base);
 }

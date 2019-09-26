@@ -314,32 +314,46 @@ void multshare(byte *a,byte *b,byte *c,int n)
   }
 }
 
-void subbyte_rp_share(byte *a,int n)
+void subbyte_rp_share_func(byte *a,int n,void (*multshare_call)(byte *,byte *,byte *,int))
 {
   // Memory: 5*n+5 byte 
   int i;
-  byte z[n];
+  byte z[n],z2[n];
+  byte one[n];
+
+  for(i=1;i<n;i++)
+    one[i]=0;
+
+  one[0]=1;
+
   memcpy(z,a,n);
   square_share(z,n);    // z=x^2     
 
+  multshare_call(z,one,z2,n);  // z=Refresh(z)
+  memcpy(z,z2,n);
+
   byte y[n];
-  multshare(z,a,y,n);   // y=z*x=x^3
+  multshare_call(z,a,y,n);   // y=z*x=x^3
 
   byte w[n];
   memcpy(w,y,n);
   square_share(w,n);
   square_share(w,n);     // w=x^12
 
+  byte w2[n];
+  multshare_call(w,one,w2,n); // w=Refresh(w)
+  memcpy(w,w2,n);
+
   byte y2[n];
-  multshare(y,w,y2,n);   // y2=x^15
+  multshare_call(y,w,y2,n);   // y2=x^15
 
   square_share(y2,n);
   square_share(y2,n);
   square_share(y2,n);
   square_share(y2,n);    // y2=x^240
   
-  multshare(w,y2,y,n);   // y=x^252
-  multshare(y,z,a,n);    // a=x^254
+  multshare_call(w,y2,y,n);   // y=x^252
+  multshare_call(y,z,a,n);    // a=x^254
 
   for(i=0;i<n;i++)
     a[i]=taffine[a[i]];
@@ -347,13 +361,19 @@ void subbyte_rp_share(byte *a,int n)
     a[0]^=99;
 }
 
+void subbyte_rp_share(byte *a,int n)
+{
+  subbyte_rp_share_func(a,n,multshare);
+}
+
+// AES with RP Sbox computation without masking
 void subbytestate_rp(byte *state)
 {
   int i;
   for(i=0;i<16;i++) state[i]=subbyte_rp(state[i]);
 }
 
-
+// AES with RP Sbox computation without masking
 void aes_rp(byte in[16],byte out[16],byte key[16])
 {
   int i,j;
