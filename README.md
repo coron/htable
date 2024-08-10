@@ -40,3 +40,11 @@ References
 
 [CRZ17] Jean-Sébastien Coron, Franck Rondepierre, Rina Zeitoun:
 High Order Masking of Look-up Tables with Common Shares. IACR Cryptology ePrint Archive 2017: 271 (2017).
+
+## How to turn code written in python2 into python3 code
+```
+$ sudo apt install 2to3
+
+# 2to3 -w yourfile.py
+$ 2to3 -w des_original.sage # --> Not working... ParseError
+```

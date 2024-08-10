@@ -55,13 +55,25 @@ void test_des_encrypt()
     dt=run_des_share(in,out,key,n,&polyCRV_share,nt);
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,8);	
-	
+
+    printf("  With randomized table(8-bit): ");
+    init_randcount();
+    dt=run_des_share(in,out,key,n,&evalSbox,nt);
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,8);
+
     printf("  With randomized table: ");
     init_randcount();
     dt=run_des_share(in,out,key,n,&sbox_htable_word,nt);
     report_time(dt,nt,base,get_randcount());
     check_ciphertext(out,outex,8);
 
+    printf("  With randomized table inc(8-bit): ");
+    init_randcount();
+    dt=run_des_share(in,out,key,n,&evalSbox_inc,nt);
+    report_time(dt,nt,base,get_randcount());
+    check_ciphertext(out,outex,8);
+    
     printf("  With randomized table inc: ");
     init_randcount();
     dt=run_des_share(in,out,key,n,&sbox_htable_word_inc,nt);

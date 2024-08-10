@@ -13,8 +13,10 @@
 
 typedef unsigned int word;
 
-void evalSbox(byte *a,byte *S,int n)
+void evalSbox(int ii, byte *a, int n)
 {
+  byte *S=sbox+(ii << 6);
+
   unsigned char T[K][n];
   unsigned char Tp[K][n];
   byte b[n];
@@ -35,6 +37,46 @@ void evalSbox(byte *a,byte *S,int n)
     {
       memcpy(T[k],Tp[k],n);
       refresh(T[k],n);
+    }
+  }
+  
+  for(j=0;j<n;j++)
+    b[j]=T[a[n-1]][j];
+
+  refresh(b,n);
+  for(j=0;j<n;j++) a[j]=b[j];
+}
+
+// @ reference
+// High Order Masking of Look-up Tables with Common Shares - Algorithm 3
+void evalSbox_inc(int ii, byte *a, int n)
+{
+  
+  unsigned char T[K][n];
+  unsigned char Tp[K][n];
+  byte b[n];
+  int i,j,k,k2;
+
+  byte *S=sbox+(ii << 6);
+ 
+  for(k=0;k<K;k++)
+    share(S[k],T[k],n);
+
+  for(i=0;i<(n-1);i++)
+  {
+    for(k=0;k<K;k++)
+    {
+      k2=k ^ a[i];
+      memcpy(Tp[k],T[k2],i + 1);
+    }
+
+    for(k=0;k<K;k++)
+    {
+      memcpy(T[k],Tp[k], i + 1);
+      if (i != n-2) {
+        T[k][i + 2] = 0;
+      }
+      refresh(T[k], i + 2);
     }
   }
   

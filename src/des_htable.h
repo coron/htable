@@ -4,5 +4,7 @@
 
 #include "common.h"
 
+void evalSbox(int ii, byte *a, int n);
+void evalSbox_inc(int ii, byte *a, int n);
 void sbox_htable_word(int ii,byte *a,int n);
 void sbox_htable_word_inc(int ii,byte *a,int n);

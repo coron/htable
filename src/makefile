@@ -1,6 +1,6 @@
 AESOBJ = aes.o aes_rp.o share.o aes_share.o aes_htable.o runaes.o common.o aes_rp_prg.o prg.o prgmat.o
 
-DESOBJ = share.o des_carlet.o des_crv.o des.o rundes.o des_htable.o des_share.o common.o
+DESOBJ = share.o des_carlet.o des_crv.o des.o rundes.o des_htable.o des_share.o common.o prg.o
 
 all : runaes.out
 

@@ -30,7 +30,7 @@ def listCoef(p,n):
 
 def test():
   F=GF(2^6,'t')
-  print "Modulus=",F.modulus()
+  print("Modulus=",F.modulus())
 
   li=[]
   for isbox in range(8):
@@ -48,14 +48,16 @@ def test():
     s1=s1+x^9
     s2=s2+x^9
 
-    print f==(x^36+c)*((x^18+c1)*q1+s1)+(x^18+c2)*q2+s2
+    print(f==(x^36+c)*((x^18+c1)*q1+s1)+(x^18+c2)*q2+s2)
     
     for p in c,c1,q1,s1,c2,q2,s2:
       li.extend(listCoef(p,10))
-    print [fromGF64(u(0)) for u in c,c1,q1,s1,c2,q2,s2]
-    print fromGF64(f(0))
-    print fromGF64(c1(0),q1(0))
+    print([fromGF64(u(0)) for u in (c,c1,q1,s1,c2,q2,s2)])
+    print(fromGF64(f(0)))
+    print(fromGF64(c1(0)))
+    print(fromGF64(q1(0)))
     return
-  print li
-  print len(li)
-  
+  print(li)
+  print(len(li))
+
+test()
